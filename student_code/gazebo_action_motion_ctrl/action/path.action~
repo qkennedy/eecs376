@@ -4,8 +4,10 @@
 nav_msgs/Path nav_path
 ---
 #result definition
-Pose final_pose
+geometry_msgs/Pose final_pose
 int32 goal_stamp
 ---
 #feedback
-Pose curr_pos
+geometry_msgs/Pose curr_pos
+int32 num_goals_rem
+int32 goal_num

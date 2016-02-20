@@ -199,25 +199,24 @@ void MyActionServer::executeCB(const actionlib::SimpleActionServer<gazebo_action
 	        
 	do_spin(spin_angle); // carry out this incremental action        
         yaw_current = yaw_desired;
-        g_curr_pose.orientation = convertPlanarPhi2Quaternion(yaw_desired);	
+        g_curr_pose.orientation = convertPlanarPhi2Quaternion(yaw_desired);
         do_move(travel_distance);
         g_curr_pose.position = pose_desired.position;
         ROS_INFO("pose %d END: final yaw = %f; final (x,y) = (%f,%f)", i, yaw_desired,
                 pose_desired.position.x, pose_desired.position.y);
-        feedback_.curr_pos = g_curr_pose; // populate feedback message with current countdown value
+        feedback_.curr_pose = g_curr_pose; // populate feedback message with current countdown value
+        feedback_.num_goals_rem=npts-i;
         as_.publishFeedback(feedback_);
     }
 
     // each iteration, check if cancellation has been ordered
-    if (as_.isPreemptRequested()) {
-        ROS_WARN("goal cancelled!");
-        result_.final_pose = g_curr_pose;
-	do_halt();
-        as_.setAborted(result_); // tell the client we have given up on this goal; send the result message as well
-        return; // done with callback
-    }
-
-
+   	if (as_.isPreemptRequested()) {
+        	ROS_WARN("goal cancelled!");
+        	result_.final_pose = g_curr_pose;
+        	do_halt();
+        	as_.setAborted(result_); // tell the client we have given up on this goal; send the result message as well
+        	return;	
+        }
     //if we survive to here, then the goal was successfully accomplished; inform the client
     result_.final_pose = g_curr_pose; //value should be zero, if completed countdown
     as_.setSucceeded(result_); // return the "result" message to client, along with "success" status
