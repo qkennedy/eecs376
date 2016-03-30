@@ -1,0 +1,7 @@
+<launch>
+	<node name="alpha_open_loop_controller" pkg="alpha_mobot_pub_des_state" type="alpha_open_loop_controller" output="screen"/>
+	<node name="alpha_mobot_pub_des_state" pkg="alpha_mobot_pub_des_state" type="alpha_mobot_pub_des_state" output="screen"/>
+	<!--<node name="alpha_pub_des_state_path_client" pkg="alpha_mobot_pub_des_state" type="alpha_pub_des_state_path_client" output="screen"/> -->
+	<node name="estop" pkg="alpha_mobot_pub_des_state" type="estop" output="screen"/>
+	<node name="lidar_alarm" pkg="alpha_lidar_alarm" type="lidar_alarm.py" output="screen"/>
+</launch>
