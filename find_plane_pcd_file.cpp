@@ -83,14 +83,15 @@ int main(int argc, char** argv) {
 
     PclUtils pclUtils(&nh); //instantiate a PclUtils object--a local library w/ some handy fncs
     g_pcl_utils_ptr = &pclUtils; // make this object shared globally, so above fnc can use it too
-
-    cout << " select a patch of points to find corresponding plane..." << endl; //prompt user action
     //loop to test for new selected-points inputs and compute and display corresponding planar fits 
     while (ros::ok()) {
-    	for(int i=0;i<pclKinect_clr_ptr->points.size;i++){
-    		pcl::PointXYZRGB point = pclKinect_clr_ptr->points[i];
-    		double height = point.z;
-    	}
+    	double z_nom=1.0;
+    	double z_eps=0.2;
+    	double centBounds=1.0;
+    	double lastZ=1.0;
+    	pclUtils.filter_cloud_z(*pclKinect_clr_ptr,z_nom,z_eps,indices);
+    	pclUtils.copy_indexed_pts_to_output_cloud(indices,*plane_pts_ptr);
+    	pclUtils.filter_cloud_z(*pclKinect_clr_ptr,z_nom,z_eps,1.0,pclUtils.compute_centroid(*plane_pts_ptr),indices);
         /*if (pclUtils.got_selected_points()) { //here if user selected a new patch of points
             pclUtils.reset_got_selected_points(); // reset for a future trigger
             pclUtils.get_copy_selected_points(selected_pts_cloud_ptr); //get a copy of the selected points
