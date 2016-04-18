@@ -3,13 +3,16 @@
 	<arg name="paused" value="true"/>
 	</include>
 
-	<include file="$(find mobot_urdf)/launch/mobot_w_lidar_and_kinect.launch"/>
-	<include file="$(find amcl)/examples/amcl_diff.launch"/>
-  	<arg name="map_file" default="$(find maps)/mymap.yaml"/>
-  	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
-	<node name="lin_steering" pkg="lin_steering" type="lin_steering_wrt_odom" output="screen"/>
-	<node name="alpha_mobot_pub_des_state" pkg="alpha_mobot_pub_des_state" type="alpha_mobot_pub_des_state" output="screen"/>
-	<node name="alpha_pub_des_state_path_client" pkg="alpha_mobot_pub_des_state" type="alpha_pub_des_state_path_client" output="screen"/>
-	<node name="estop" pkg="alpha_mobot_pub_des_state" type="estop" output="screen"/>
-	<node name="lidar_alarm" pkg="alpha_lidar_alarm" type="lidar_alarm.py" output="screen"/>
+	<include file="$(find mobot_urdf)/launch/mobot_w_lidar.launch"/>
+	<node name="map_server" pkg="map_server" type="map_server" args="$(find alpha_maps)/startingPenMapC.yaml" />
+
+  	<node name="lin_steering_wrt_odom" pkg="lin_steering" type="lin_steering_wrt_odom" output="screen"/>
+  	
+	<node name="odom_tf" pkg="odom_tf" type="odom_tf" output="screen"/>
+	<node name="alpha_mobot_pub_des_state_startup" pkg="alpha_mobot_pub_des_state" type="alpha_mobot_pub_des_state_startup" output="screen"/>
+	<node name="amcl" pkg="amcl" type="amcl" output="screen">
+		<remap from="scan" to="/scan"/>
+	</node>
+		<node name="pub_des_state_client" pkg="alpha_mobot_pub_des_state" type="pub_des_state_client" output="screen"/>
+
 </launch>

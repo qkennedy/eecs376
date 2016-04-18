@@ -1,0 +1,21 @@
+<launch>
+
+	<include file="$(find cwru_base)/launch/start_base.launch"/>
+
+	<node name="alpha_lin_steering_w_amcl" pkg="alpha_lin_steering" type="alpha_lin_steering_w_amcl" output="screen"/>
+
+	<!-- ********** let mobot stop at the oringin ********** -->
+	<node name="alpha_mobot_pub_des_state_startup" pkg="alpha_mobot_pub_des_state" type="alpha_mobot_pub_des_state_startup" output="screen"/>
+
+	<node name="map_server" pkg="map_server" type="map_server" args="$(find alpha_maps)/gl2_map/gl2_map.yaml" />
+
+	<node name="amcl" pkg="amcl" type="amcl" output="screen">
+		<remap from="scan" to="base_laser1_scan"/>
+	</node>
+
+	<node name="odom_tf" pkg="odom_tf" type="odom_tf" output="screen"/>
+	
+	<!-- ********** output a path ********** -->
+	<node name="alpha_mobot_pub_des_state" pkg="alpha_mobot_pub_des_state" type="alpha_mobot_pub_des_state" output="screen"/>
+
+</launch>

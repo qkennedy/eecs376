@@ -1,0 +1,17 @@
+<launch>
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+	<arg name="paused" value="true"/>
+	</include>
+
+	<include file="$(find mobot_urdf)/launch/mobot_w_lidar.launch"/>
+	<node name="map_server" pkg="map_server" type="map_server" args="$(find alpha_maps)/startingPenMapC.yaml" />
+
+  	<node name="alpha_lin_steering_w_amcl" pkg="alpha_lin_steering" type="alpha_lin_steering_w_amcl" output="screen"/>
+  	
+	<node name="odom_tf" pkg="odom_tf" type="odom_tf" output="screen"/>
+	<node name="alpha_mobot_pub_des_state_startup" pkg="alpha_mobot_pub_des_state" type="alpha_mobot_pub_des_state_startup" output="screen"/>
+	<node name="amcl" pkg="amcl" type="amcl" output="screen">
+	</node>
+		<node name="pub_des_state_client_ps8" pkg="alpha_mobot_pub_des_state" type="pub_des_state_client_ps8" output="screen"/>
+
+</launch>

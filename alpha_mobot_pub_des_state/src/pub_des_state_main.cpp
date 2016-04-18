@@ -8,8 +8,9 @@ int main(int argc, char **argv) {
     ros::Rate looprate(1 / dt); //timer for fixed publication rate
     desStatePublisher.set_init_pose(0,0,0); //x=0, y=0, psi=0
     //put some points in the path queue--hard coded here
-    desStatePublisher.append_path_queue(0.0,0.0,0);
-    //desStatePublisher.append_path_queue(1.5,1.5,0.0);
+    desStatePublisher.append_path_queue(3.2,0.0,0.0);
+    desStatePublisher.append_path_queue(3.2,-12.2,0.0);
+    desStatePublisher.append_path_queue(-3.96,-12.1,0.0);
     
     // main loop; publish a desired state every iteration
     while (ros::ok()) {
